@@ -36,6 +36,9 @@ public class DefaultTerminalObserver implements TerminalObserver, CallObserver {
 	
 	private static Logger logger = LoggerFactory.getLogger(DefaultTerminalObserver.class);
 	
+	public Terminal getTerminal() {
+		return terminal;
+	}
 	
 	public DefaultTerminalObserver(String terminalName) {
 		

@@ -62,6 +62,7 @@ public class ForwardOnBusyOtherAddressCommand implements ITerminalObserverComman
 					return;
 				
 				boolean amiCalled = false;
+				// check if somebody is calling me
 				for (int i = 0; i < addresses.length; i++) 
 					if (addresses[i].getName().equals(cCalled.getName())) {
 						amiCalled = true;
@@ -72,7 +73,7 @@ public class ForwardOnBusyOtherAddressCommand implements ITerminalObserverComman
 				
 				if (amiCalled) {
 					boolean amiTalkingAlready = false;
-					// is other(s) already in talking?
+					// check if I am already in talking at my other line?
 					for (int i = 0; i < addresses.length; i++)
 						if (!addresses[i].getName().equals(cCalled.getName()))
 							if (addresses[i].getConnections() != null) {

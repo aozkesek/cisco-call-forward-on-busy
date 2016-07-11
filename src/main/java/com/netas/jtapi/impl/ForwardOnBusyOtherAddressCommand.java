@@ -10,8 +10,6 @@ import javax.telephony.ResourceUnavailableException;
 import javax.telephony.events.CallEv;
 import javax.telephony.events.ConnAlertingEv;
 import javax.telephony.events.Ev;
-import javax.telephony.events.TermEv;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,72 +40,79 @@ public class ForwardOnBusyOtherAddressCommand implements ITerminalObserverComman
 		
 		logger.debug("executeCommand: {} for {}", event, observer.getTerminalName());
 		
+		forwardOnBusy(observer, event);
+				
+	}
+
+	/*
+	 * 
+	 */
+	private void forwardOnBusy(DefaultTerminalObserver observer, Ev event) {
+		
 		// is call event?
-		if (event instanceof CallEv) {
-			// is alerting ?
-			if (event instanceof ConnAlertingEv) {
-				ConnAlertingEvImpl cce = (ConnAlertingEvImpl)event;
-				CiscoCall cCall = (CiscoCall)cce.getCall();
-				CiscoTerminal cTerminal = (CiscoTerminal)observer.getTerminal();
-				Address[] addresses = cTerminal.getAddresses();
-				
-				CiscoAddress cCalled = (CiscoAddress)cCall.getCalledAddress();
-				CiscoAddress cCalling = (CiscoAddress)cCall.getCallingAddress();
-				
-				logger.debug("executeCommand: {} has {} address(es). Called Address={}, Calling Address={}", 
-						cTerminal.getName(), addresses.length, cCalled.getName(), cCalling.getName());
-				
-				// has second or more line ?
-				if (addresses.length < 2)
-					return;
-				
-				boolean amiCalled = false;
-				// check if somebody is calling me
-				for (int i = 0; i < addresses.length; i++) 
-					if (addresses[i].getName().equals(cCalled.getName())) {
-						amiCalled = true;
-						break;
-					}
-				
-				logger.debug("executeCommand: Am I called ? {}", amiCalled ? "YES" : "NO");
-				
-				if (amiCalled) {
-					boolean amiTalkingAlready = false;
-					// check if I am already in talking at my other line?
-					for (int i = 0; i < addresses.length; i++)
-						if (!addresses[i].getName().equals(cCalled.getName()))
-							if (addresses[i].getConnections() != null) {
-								amiTalkingAlready = true;
-								break;
-							}
-					
-					logger.debug("executeCommand: Am I talking already ? {}", amiTalkingAlready ? "YES" : "NO");
-						
-					if (amiTalkingAlready) {
-						Connection[] cConns = cCall.getConnections();
-						for (int i = 0; i < cConns.length; i++) {
-							if (cConns[i].getState() == Connection.ALERTING) {
-								logger.debug("executeCommand: connection state {} means ALERTING.  so being redirected to {}", 
-										cConns[i].getState(), forwardOnBusyDn);
-								try {
-									((CiscoConnection)cConns[i]).redirect(forwardOnBusyDn);
-								} catch (InvalidStateException | InvalidPartyException | MethodNotSupportedException
-										| PrivilegeViolationException | ResourceUnavailableException e) {
-									logger.error("executeCommand: redirect exception {}", e);
-								}
-							}
-						}
-					}
-					
-				}
-				
+		if (!(event instanceof CallEv))
+			return;
+		
+		// is alerting ?
+		if (!(event instanceof ConnAlertingEv))
+			return;
+		
+		ConnAlertingEvImpl cce = (ConnAlertingEvImpl)event;
+		CiscoCall cCall = (CiscoCall)cce.getCall();
+		CiscoTerminal cTerminal = (CiscoTerminal)observer.getTerminal();
+		Address[] addresses = cTerminal.getAddresses();
+		
+		CiscoAddress cCalled = (CiscoAddress)cCall.getCalledAddress();
+		CiscoAddress cCalling = (CiscoAddress)cCall.getCallingAddress();
+		
+		logger.debug("executeCommand: {} has {} address(es). Called Address={}, Calling Address={}", 
+				cTerminal.getName(), addresses.length, cCalled.getName(), cCalling.getName());
+		
+		// has second or more line ?
+		if (addresses.length < 2)
+			return;
+		
+		boolean amiCalled = false;
+		// check if somebody is calling me
+		for (int i = 0; i < addresses.length; i++) 
+			if (addresses[i].getName().equals(cCalled.getName())) {
+				amiCalled = true;
+				break;
 			}
+		
+		logger.debug("executeCommand: Am I called ? {}", amiCalled ? "YES" : "NO");
+		
+		if (!amiCalled)
+			return;
+		
+		boolean amiTalkingAlready = false;
+		// check if I am already in talking at my other line?
+		for (int i = 0; i < addresses.length; i++)
+			if (!addresses[i].getName().equals(cCalled.getName()))
+				if (addresses[i].getConnections() != null) {
+					amiTalkingAlready = true;
+					break;
+				}
+		
+		logger.debug("executeCommand: Am I talking already ? {}", amiTalkingAlready ? "YES" : "NO");
 			
-		} else if (event instanceof TermEv) {
-			
+		if (!amiTalkingAlready)
+			return;
+		
+		Connection[] cConns = cCall.getConnections();
+		for (int i = 0; i < cConns.length; i++) {
+			if (cConns[i].getState() == Connection.ALERTING) {
+				logger.debug("executeCommand: connection state {} means ALERTING.  so being redirected to {}", 
+						cConns[i].getState(), forwardOnBusyDn);
+				try {
+					((CiscoConnection)cConns[i]).redirect(forwardOnBusyDn);
+				} catch (InvalidStateException | InvalidPartyException | MethodNotSupportedException
+						| PrivilegeViolationException | ResourceUnavailableException e) {
+					logger.error("executeCommand: redirect exception {}", e);
+				}
+			}
 		}
-		
-		
+	
 	}
 	
 	

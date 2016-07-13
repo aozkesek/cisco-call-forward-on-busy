@@ -12,6 +12,7 @@ import org.springframework.context.ApplicationContext;
 import com.netas.jtapi.impl.DefaultAddressObserver;
 import com.netas.jtapi.impl.DefaultProviderObserver;
 import com.netas.jtapi.impl.DefaultTerminalObserver;
+import com.netas.jtapi.impl.ForwardOnBusyOtherAddressCommand;
 import com.netas.jtapi.impl.ObserverContainer;
 
 @SpringBootApplication
@@ -48,9 +49,16 @@ public class ForwardOnBusyApp {
 				continue;
 			
 			try {
-				//if you implement terminal observer different than default, you get and use it
+				// if you implement terminal observer different than default, you get and use it
 				DefaultTerminalObserver termObserver = ForwardOnBusyApp.JTAPIAppContext.getBean(
 						DefaultTerminalObserver.class, terminalName);
+				
+				// set fwd on busy instead of default 
+				termObserver.setTerminalObserverCommand(ForwardOnBusyApp.JTAPIAppContext.getBean(
+						ForwardOnBusyOtherAddressCommand.class, "ForwardOnBusyOtherAddressCommand"
+						));
+				
+				// make sure only one exists
 				observerContainer.addTerminalObserver(termObserver);
 				
 			}
@@ -83,6 +91,7 @@ public class ForwardOnBusyApp {
 				//if you implement address observer different than default, you get and use it
 				DefaultAddressObserver addrObserver = ForwardOnBusyApp.JTAPIAppContext.getBean(
 						DefaultAddressObserver.class, addressName);
+				
 				observerContainer.addAddressObserver(addrObserver);
 				
 			}

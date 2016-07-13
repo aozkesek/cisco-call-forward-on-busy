@@ -28,8 +28,8 @@ public class DefaultTerminalObserver implements TerminalObserver, CallObserver {
 	@Autowired
 	private DefaultProviderObserver providerObserver;
 	@Autowired
-	@Qualifier("ForwardOnBusyOtherAddressCommand")
-	private ITerminalObserverCommand forwardOnBusyOtherAddressCommand;
+	@Qualifier("DefaultTerminalObserverCommand")
+	private ITerminalObserverCommand terminalObserverCommand;
 
 	private String terminalName;
 	private Terminal terminal;
@@ -38,6 +38,10 @@ public class DefaultTerminalObserver implements TerminalObserver, CallObserver {
 	
 	public Terminal getTerminal() {
 		return terminal;
+	}
+	
+	public void setTerminalObserverCommand(ITerminalObserverCommand terminalObserverCommand) {
+		this.terminalObserverCommand = terminalObserverCommand;
 	}
 	
 	public DefaultTerminalObserver(String terminalName) {
@@ -91,6 +95,8 @@ public class DefaultTerminalObserver implements TerminalObserver, CallObserver {
 		for (TermEv terminalEvent : termEvents) {
 			logger.info("terminalChangedEvent: {} for {}", terminalEvent, terminalName);
 			
+			terminalObserverCommand.executeCommand(this, terminalEvent);
+			
 		}
 		
 	}
@@ -104,7 +110,7 @@ public class DefaultTerminalObserver implements TerminalObserver, CallObserver {
 		for (CallEv callEvent : callEvents) {
 			logger.info("callChangedEvent: {} for {}", callEvent, terminalName);
 			
-			forwardOnBusyOtherAddressCommand.executeCommand(this, callEvent);
+			terminalObserverCommand.executeCommand(this, callEvent);
 			
 		}
 		

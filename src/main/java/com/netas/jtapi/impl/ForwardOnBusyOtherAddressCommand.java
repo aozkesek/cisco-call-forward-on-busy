@@ -73,26 +73,37 @@ public class ForwardOnBusyOtherAddressCommand implements ITerminalObserverComman
 			return;
 		
 		boolean amiCalled = false;
-		// check if somebody is calling me
-		for (int i = 0; i < addresses.length; i++) 
-			if (addresses[i].getName().equals(cCalled.getName())) {
+		boolean amiCallingMyself = false;
+		// check if somebody -not me/myself- is calling me
+		for (int i = 0; i < addresses.length; i++) { 
+			
+			if (addresses[i].getName().equals(cCalled.getName()))
 				amiCalled = true;
+			
+			if (addresses[i].getName().equals(cCalling.getName()))
+				amiCallingMyself = true;
+			
+			if (amiCalled && amiCallingMyself)
 				break;
-			}
+		}
+			
 		
 		logger.debug("executeCommand: Am I called ? {}", amiCalled ? "YES" : "NO");
+		logger.debug("executeCommand: Am I calling myself ? {}", amiCallingMyself ? "YES" : "NO");
 		
-		if (!amiCalled)
+		if (!amiCalled || amiCallingMyself)
 			return;
 		
 		boolean amiTalkingAlready = false;
 		// check if I am already in talking at my other line?
 		for (int i = 0; i < addresses.length; i++)
-			if (!addresses[i].getName().equals(cCalled.getName()))
+			if (!addresses[i].getName().equals(cCalled.getName())) {
 				if (addresses[i].getConnections() != null) {
 					amiTalkingAlready = true;
 					break;
 				}
+			} 
+				
 		
 		logger.debug("executeCommand: Am I talking already ? {}", amiTalkingAlready ? "YES" : "NO");
 			

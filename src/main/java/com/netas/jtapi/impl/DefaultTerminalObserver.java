@@ -40,6 +40,10 @@ public class DefaultTerminalObserver implements TerminalObserver, CallObserver {
 		return terminal;
 	}
 	
+	public ITerminalObserverCommand getTerminalObserverCommand() {
+		return terminalObserverCommand;
+	}
+	
 	public void setTerminalObserverCommand(ITerminalObserverCommand terminalObserverCommand) {
 		this.terminalObserverCommand = terminalObserverCommand;
 	}

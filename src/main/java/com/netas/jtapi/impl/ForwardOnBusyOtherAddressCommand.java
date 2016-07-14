@@ -10,8 +10,6 @@ import javax.telephony.ResourceUnavailableException;
 import javax.telephony.events.CallEv;
 import javax.telephony.events.ConnAlertingEv;
 import javax.telephony.events.Ev;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -20,15 +18,12 @@ import com.cisco.jtapi.extensions.CiscoAddress;
 import com.cisco.jtapi.extensions.CiscoCall;
 import com.cisco.jtapi.extensions.CiscoConnection;
 import com.cisco.jtapi.extensions.CiscoTerminal;
-import com.netas.jtapi.intf.ITerminalObserverCommand;
 
 @Component("ForwardOnBusyOtherAddressCommand")
-public class ForwardOnBusyOtherAddressCommand implements ITerminalObserverCommand {
+public class ForwardOnBusyOtherAddressCommand extends DefaultTerminalObserverCommand {
 
 	@Value("${jtapi.forwardonbusy.dn}")
 	private String forwardOnBusyDn;
-	
-	private static Logger logger = LoggerFactory.getLogger(ForwardOnBusyOtherAddressCommand.class);
 	
 	@Override
 	public void executeCommand(DefaultTerminalObserver observer, Ev event) {
@@ -125,7 +120,6 @@ public class ForwardOnBusyOtherAddressCommand implements ITerminalObserverComman
 		}
 	
 	}
-	
-	
+
 
 }

@@ -28,6 +28,8 @@ public class ForwardOnBusyApp {
 		JTAPIAppContext = SpringApplication.run(ForwardOnBusyApp.class, args);
 		
 		startTerminalObservers();
+		
+		// no need to address observer(s) 
 		//startAddressObservers();
 		
 	}
@@ -49,7 +51,7 @@ public class ForwardOnBusyApp {
 				continue;
 			
 			try {
-				// if you implement terminal observer different than default, you get and use it
+				// if you implement terminal observer different than default, then you get and use it
 				DefaultTerminalObserver termObserver = ForwardOnBusyApp.JTAPIAppContext.getBean(
 						DefaultTerminalObserver.class, terminalName);
 				
@@ -57,6 +59,12 @@ public class ForwardOnBusyApp {
 				termObserver.setTerminalObserverCommand(ForwardOnBusyApp.JTAPIAppContext.getBean(
 						ForwardOnBusyOtherAddressCommand.class, "ForwardOnBusyOtherAddressCommand"
 						));
+				/*
+				 * or get default command observer and set next command observer into it
+				 * 
+				 *  termObserver.getTerminalObserverCommand().setNextObserverCommandInChain(nextObserverCommand);
+				 */
+				
 				
 				// make sure only one exists
 				observerContainer.addTerminalObserver(termObserver);

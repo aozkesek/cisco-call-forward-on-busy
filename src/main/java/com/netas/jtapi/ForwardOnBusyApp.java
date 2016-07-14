@@ -62,7 +62,9 @@ public class ForwardOnBusyApp {
 				/*
 				 * or get default command observer and set next command observer into it
 				 * 
-				 *  termObserver.getTerminalObserverCommand().setNextObserverCommandInChain(nextObserverCommand);
+				 *  termObserver
+				 *  	.getTerminalObserverCommand()
+				 *  	.setNextObserverCommandInChain(nextObserverCommand);
 				 */
 				
 				

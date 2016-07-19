@@ -96,8 +96,8 @@ public class ForwardOnBusyOtherAddressCommand extends DefaultTerminalObserverCom
 		}
 			
 		
-		logger.debug("checkRedirectByAddresses: Am I called ? {}", amiCalled ? "YES" : "NO");
-		logger.debug("checkRedirectByAddresses: Am I calling myself ? {}", amiCallingMyself ? "YES" : "NO");
+		logger.info("checkRedirectByAddresses: Am I calling myself ? {}", amiCallingMyself ? "YES" : "NO");
+		logger.info("checkRedirectByAddresses: Am I called ? {}", amiCalled ? "YES" : "NO");
 		
 		if (!amiCalled || amiCallingMyself)
 			return false;
@@ -115,7 +115,7 @@ public class ForwardOnBusyOtherAddressCommand extends DefaultTerminalObserverCom
 			} 
 				
 		
-		logger.debug("checkRedirectByAddresses: Am I talking already ? {}", amiTalkingAlready ? "YES" : "NO");
+		logger.info("checkRedirectByAddresses: Am I talking already ? {}", amiTalkingAlready ? "YES" : "NO");
 			
 		if (!amiTalkingAlready)
 			return false;
@@ -127,7 +127,7 @@ public class ForwardOnBusyOtherAddressCommand extends DefaultTerminalObserverCom
 		
 		for (int i = 0; i < connections.length; i++) {
 			if (connections[i].getState() == Connection.ALERTING) {
-				logger.debug("redirect: connection state {} means ALERTING.  so being redirected to {}", 
+				logger.warn("redirect: connection state {} means ALERTING.  so being redirected to {}", 
 						connections[i].getState(), forwardOnBusyDn);
 				try {
 					((CiscoConnection)connections[i]).redirect(forwardOnBusyDn);
@@ -165,8 +165,8 @@ public class ForwardOnBusyOtherAddressCommand extends DefaultTerminalObserverCom
 				break;
 		}
 		
-		logger.debug("checkRedirectByConnections: Am I called ? {}", amiCalled ? "YES" : "NO");
-		logger.debug("checkRedirectByConnections: Am I talking already ? {}", amiTalkingAlready ? "YES" : "NO");
+		logger.info("checkRedirectByConnections: Am I called ? {}", amiCalled ? "YES" : "NO");
+		logger.info("checkRedirectByConnections: Am I talking already ? {}", amiTalkingAlready ? "YES" : "NO");
 		
 		if (amiCalled && amiTalkingAlready)
 			return true;

@@ -97,7 +97,7 @@ public class DefaultTerminalObserver implements TerminalObserver, CallObserver {
 			return;
 		
 		for (TermEv terminalEvent : termEvents) {
-			logger.info("terminalChangedEvent: {} for {}", terminalEvent, terminalName);
+			logger.debug("terminalChangedEvent: {} for {}", terminalEvent, terminalName);
 			
 			terminalObserverCommand.executeCommand(this, terminalEvent);
 			
@@ -112,7 +112,7 @@ public class DefaultTerminalObserver implements TerminalObserver, CallObserver {
 			return;
 		
 		for (CallEv callEvent : callEvents) {
-			logger.info("callChangedEvent: {} for {}", callEvent, terminalName);
+			logger.debug("callChangedEvent: {} for {}", callEvent, terminalName);
 			
 			terminalObserverCommand.executeCommand(this, callEvent);
 			

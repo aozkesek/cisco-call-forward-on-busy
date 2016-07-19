@@ -18,7 +18,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.netas.jtapi.intf.IAddressObserverCommand;
-import com.netas.jtapi.intf.ITerminalObserverCommand;
 
 @Component
 @Scope("prototype")
@@ -90,7 +89,7 @@ public class DefaultAddressObserver implements AddressObserver, CallObserver {
 			return;
 		
 		for(AddrEv addrEvent : addrEvents) {
-			logger.info("addressChangedEvent: {} for ", addrEvent, addressName);
+			logger.debug("addressChangedEvent: {} for ", addrEvent, addressName);
 			
 			addressObserverCommand.executeCommand(this, addrEvent);		
 		}
@@ -107,7 +106,7 @@ public class DefaultAddressObserver implements AddressObserver, CallObserver {
 			return;
 		
 		for(CallEv callEvent : callEvents) {
-			logger.info("callChangedEvent: {} for {}", callEvent, addressName);
+			logger.debug("callChangedEvent: {} for {}", callEvent, addressName);
 			
 			addressObserverCommand.executeCommand(this, callEvent);		
 		}

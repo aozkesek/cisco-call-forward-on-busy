@@ -101,7 +101,7 @@ public class DefaultProviderObserver implements ProviderObserver {
 		
 		for(ProvEv provEvent : provEvents) {
 			
-			logger.info("providerChangedEvent: {}", provEvent);
+			logger.warn("providerChangedEvent: {}", provEvent);
 			
 			if (provEvent instanceof ProvInServiceEv)
 			{

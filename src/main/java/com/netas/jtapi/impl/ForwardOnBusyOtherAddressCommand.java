@@ -36,7 +36,8 @@ public class ForwardOnBusyOtherAddressCommand extends DefaultTerminalObserverCom
 		logger.debug("executeCommand: {} for {}", event, observer.getTerminalName());
 		
 		forwardOnBusy(observer, event);
-				
+	
+		//super.executeCommand(observer, event);
 	}
 
 	/*
@@ -53,29 +54,41 @@ public class ForwardOnBusyOtherAddressCommand extends DefaultTerminalObserverCom
 			return;
 		
 		ConnAlertingEvImpl cce = (ConnAlertingEvImpl)event;
-		CiscoCall cCall = (CiscoCall)cce.getCall();
-		CiscoTerminal cTerminal = (CiscoTerminal)observer.getTerminal();
-		Address[] addresses = cTerminal.getAddresses();
+		CiscoCall call = (CiscoCall)cce.getCall();
+		CiscoTerminal terminal = (CiscoTerminal)observer.getTerminal();
+		Address[] addresses = terminal.getAddresses();
 		
-		CiscoAddress cCalled = (CiscoAddress)cCall.getCalledAddress();
-		CiscoAddress cCalling = (CiscoAddress)cCall.getCallingAddress();
+		CiscoAddress called = (CiscoAddress)call.getCalledAddress();
+		CiscoAddress calling = (CiscoAddress)call.getCallingAddress();
 		
 		logger.debug("executeCommand: {} has {} address(es). Called Address={}, Calling Address={}", 
-				cTerminal.getName(), addresses.length, cCalled.getName(), cCalling.getName());
-		
-		// has second or more line ?
-		if (addresses.length < 2)
-			return;
+				terminal.getName(), addresses.length, called.getName(), calling.getName());
+
+		// check addresses first if minimum 2 addresses are there
+		if (addresses.length > 1)
+			if (checkRedirectByAddresses(addresses, called, calling)) {
+				redirect(call.getConnections());
+				return;
+			}
+
+		// only one address is there, so what about connections
+		if (checkRedirectByConnections(addresses[0])) 
+			redirect(addresses[0].getConnections());
+			
+	
+	}
+
+	private boolean checkRedirectByAddresses(Address[] addresses, CiscoAddress called, CiscoAddress calling) {
 		
 		boolean amiCalled = false;
 		boolean amiCallingMyself = false;
 		// check if somebody -not me/myself- is calling me
 		for (int i = 0; i < addresses.length; i++) { 
 			
-			if (addresses[i].getName().equals(cCalled.getName()))
+			if (addresses[i].getName().equals(called.getName()))
 				amiCalled = true;
 			
-			if (addresses[i].getName().equals(cCalling.getName()))
+			if (addresses[i].getName().equals(calling.getName()))
 				amiCallingMyself = true;
 			
 			if (amiCalled && amiCallingMyself)
@@ -83,16 +96,18 @@ public class ForwardOnBusyOtherAddressCommand extends DefaultTerminalObserverCom
 		}
 			
 		
-		logger.debug("executeCommand: Am I called ? {}", amiCalled ? "YES" : "NO");
-		logger.debug("executeCommand: Am I calling myself ? {}", amiCallingMyself ? "YES" : "NO");
+		logger.debug("checkRedirectByAddresses: Am I called ? {}", amiCalled ? "YES" : "NO");
+		logger.debug("checkRedirectByAddresses: Am I calling myself ? {}", amiCallingMyself ? "YES" : "NO");
 		
 		if (!amiCalled || amiCallingMyself)
-			return;
+			return false;
+		
+		// one of called or calling is not me, go on
 		
 		boolean amiTalkingAlready = false;
 		// check if I am already in talking at my other line?
 		for (int i = 0; i < addresses.length; i++)
-			if (!addresses[i].getName().equals(cCalled.getName())) {
+			if (!addresses[i].getName().equals(called.getName())) {
 				if (addresses[i].getConnections() != null) {
 					amiTalkingAlready = true;
 					break;
@@ -100,26 +115,64 @@ public class ForwardOnBusyOtherAddressCommand extends DefaultTerminalObserverCom
 			} 
 				
 		
-		logger.debug("executeCommand: Am I talking already ? {}", amiTalkingAlready ? "YES" : "NO");
+		logger.debug("checkRedirectByAddresses: Am I talking already ? {}", amiTalkingAlready ? "YES" : "NO");
 			
 		if (!amiTalkingAlready)
-			return;
+			return false;
 		
-		Connection[] cConns = cCall.getConnections();
-		for (int i = 0; i < cConns.length; i++) {
-			if (cConns[i].getState() == Connection.ALERTING) {
-				logger.debug("executeCommand: connection state {} means ALERTING.  so being redirected to {}", 
-						cConns[i].getState(), forwardOnBusyDn);
+		return true;
+	}
+
+	private void redirect(Connection[] connections) {
+		
+		for (int i = 0; i < connections.length; i++) {
+			if (connections[i].getState() == Connection.ALERTING) {
+				logger.debug("redirect: connection state {} means ALERTING.  so being redirected to {}", 
+						connections[i].getState(), forwardOnBusyDn);
 				try {
-					((CiscoConnection)cConns[i]).redirect(forwardOnBusyDn);
+					((CiscoConnection)connections[i]).redirect(forwardOnBusyDn);
+					return;
 				} catch (InvalidStateException | InvalidPartyException | MethodNotSupportedException
 						| PrivilegeViolationException | ResourceUnavailableException e) {
-					logger.error("executeCommand: redirect exception {}", e);
+					logger.error("redirect: redirect exception {}", e);
 				}
 			}
 		}
 	
 	}
 
-
+	private boolean checkRedirectByConnections(Address address) {
+		
+		
+		Connection[] connections = address.getConnections();
+		
+		// has second call ?
+		if (connections.length < 2)
+			return false;
+		
+		boolean amiCalled = false;
+		boolean amiTalkingAlready = false;
+		// check if somebody -not me/myself- is calling me
+		for (int i = 0; i < connections.length; i++) { 
+			
+			if (connections[i].getState() == Connection.ALERTING)
+				amiCalled = true;
+			
+			if (connections[i].getState() == Connection.CONNECTED)
+				amiTalkingAlready = true;
+				
+			if (amiCalled && amiTalkingAlready)
+				break;
+		}
+		
+		logger.debug("checkRedirectByConnections: Am I called ? {}", amiCalled ? "YES" : "NO");
+		logger.debug("checkRedirectByConnections: Am I talking already ? {}", amiTalkingAlready ? "YES" : "NO");
+		
+		if (amiCalled && amiTalkingAlready)
+			return true;
+		
+		return false;
+	}
+	
+	
 }

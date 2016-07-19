@@ -61,7 +61,7 @@ public class ForwardOnBusyOtherAddressCommand extends DefaultTerminalObserverCom
 		CiscoAddress called = (CiscoAddress)call.getCalledAddress();
 		CiscoAddress calling = (CiscoAddress)call.getCallingAddress();
 		
-		logger.debug("executeCommand: {} has {} address(es). Called Address={}, Calling Address={}", 
+		logger.debug("forwardOnBusy: {} has {} address(es). Called Address={}, Calling Address={}", 
 				terminal.getName(), addresses.length, called.getName(), calling.getName());
 
 		// check addresses first if minimum 2 addresses are there

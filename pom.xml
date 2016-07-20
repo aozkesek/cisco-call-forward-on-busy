@@ -4,7 +4,7 @@
   <artifactId>ForwardOnBusy</artifactId>
   <version>0.0.1</version>
   <name>ForwardOnBusy</name>
-  <description>Cengiz Holding - IT Helpdesk deskphones with 2 line</description>
+  <description>Cengiz Holding - Deskphones with 2 or more line - Forward new call if another exists</description>
   
 	<parent>
 	    <groupId>org.springframework.boot</groupId>
@@ -37,13 +37,13 @@
 		<plugins>
 		
 			<plugin>
-	       <groupId>org.apache.maven.plugins</groupId>
-	       <artifactId>maven-compiler-plugin</artifactId>
-	       <configuration>
-	         <source>1.8</source>
-	         <target>1.8</target>
-	       </configuration>
-	     </plugin>
+		       <groupId>org.apache.maven.plugins</groupId>
+		       <artifactId>maven-compiler-plugin</artifactId>
+		       <configuration>
+		         <source>1.8</source>
+		         <target>1.8</target>
+		       </configuration>
+		     </plugin>
 	     		
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>

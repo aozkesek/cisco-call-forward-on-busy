@@ -1,4 +1,4 @@
-package com.netas.jtapi.impl;
+package org.mao.jtapi.impl;
 
 import javax.telephony.Address;
 import javax.telephony.Connection;
@@ -10,14 +10,14 @@ import javax.telephony.ResourceUnavailableException;
 import javax.telephony.events.CallEv;
 import javax.telephony.events.ConnAlertingEv;
 import javax.telephony.events.Ev;
+
+import org.cisco.jtapi.ConnAlertingEvImpl;
+import org.cisco.jtapi.extensions.CiscoAddress;
+import org.cisco.jtapi.extensions.CiscoCall;
+import org.cisco.jtapi.extensions.CiscoConnection;
+import org.cisco.jtapi.extensions.CiscoTerminal;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
-import com.cisco.jtapi.ConnAlertingEvImpl;
-import com.cisco.jtapi.extensions.CiscoAddress;
-import com.cisco.jtapi.extensions.CiscoCall;
-import com.cisco.jtapi.extensions.CiscoConnection;
-import com.cisco.jtapi.extensions.CiscoTerminal;
 
 @Component("ForwardOnBusyOtherAddressCommand")
 public class ForwardOnBusyOtherAddressCommand extends DefaultTerminalObserverCommand {

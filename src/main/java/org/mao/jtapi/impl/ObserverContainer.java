@@ -1,4 +1,4 @@
-package com.netas.jtapi.impl;
+package org.mao.jtapi.impl;
 
 import java.util.concurrent.ConcurrentHashMap;
 

@@ -1,9 +1,9 @@
-package com.netas.jtapi.intf;
+package org.mao.jtapi.intf;
 
 import javax.telephony.events.Ev;
-import org.springframework.stereotype.Component;
 
-import com.netas.jtapi.impl.DefaultTerminalObserver;
+import org.mao.jtapi.impl.DefaultTerminalObserver;
+import org.springframework.stereotype.Component;
 
 @Component
 public interface ITerminalObserverCommand extends IObserverCommand<DefaultTerminalObserver, Ev> {

@@ -1,4 +1,4 @@
-package com.netas.jtapi.impl;
+package org.mao.jtapi.impl;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -15,16 +15,15 @@ import javax.telephony.events.ProvEv;
 import javax.telephony.events.ProvInServiceEv;
 import javax.telephony.events.ProvOutOfServiceEv;
 
+import org.cisco.cti.util.Condition;
+import org.cisco.jtapi.extensions.CiscoJtapiPeer;
+import org.cisco.jtapi.extensions.CiscoJtapiProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-
-import com.cisco.cti.util.Condition;
-import com.cisco.jtapi.extensions.CiscoJtapiPeer;
-import com.cisco.jtapi.extensions.CiscoJtapiProperties;
 
 @Component
 @Scope("singleton")

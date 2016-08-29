@@ -1,13 +1,12 @@
-package com.netas.jtapi.impl;
+package org.mao.jtapi.impl;
 
 import javax.telephony.events.Ev;
 
+import org.mao.jtapi.intf.IAddressObserverCommand;
+import org.mao.jtapi.intf.IObserverCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-
-import com.netas.jtapi.intf.IAddressObserverCommand;
-import com.netas.jtapi.intf.IObserverCommand;
 
 @Component("DefaultAddressObserverCommand")
 public class DefaultAddressObserverCommand implements IAddressObserverCommand {

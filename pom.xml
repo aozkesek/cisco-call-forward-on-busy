@@ -1,10 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.netas.jtapi</groupId>
+  <groupId>org.mao.jtapi</groupId>
   <artifactId>ForwardOnBusy</artifactId>
   <version>0.0.1</version>
   <name>ForwardOnBusy</name>
-  <description>Cengiz Holding - Deskphones with 2 or more line - Forward new call if another exists</description>
+  <description>Deskphones with 2 or more line - Forward new call if another exists</description>
   
 	<parent>
 	    <groupId>org.springframework.boot</groupId>
@@ -49,7 +49,7 @@
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
 				<configuration>
-				  <mainClass>com.netas.jtapi.ForwardOnBusyApp</mainClass>
+				  <mainClass>org.mao.jtapi.ForwardOnBusyApp</mainClass>
 				</configuration>
 			</plugin>
 			

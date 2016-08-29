@@ -1,12 +1,12 @@
-package com.netas.jtapi.impl;
+package org.mao.jtapi.impl;
 
 import javax.telephony.events.Ev;
+
+import org.mao.jtapi.intf.IObserverCommand;
+import org.mao.jtapi.intf.ITerminalObserverCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-
-import com.netas.jtapi.intf.IObserverCommand;
-import com.netas.jtapi.intf.ITerminalObserverCommand;
 
 @Component("DefaultTerminalObserverCommand")
 public class DefaultTerminalObserverCommand implements ITerminalObserverCommand {

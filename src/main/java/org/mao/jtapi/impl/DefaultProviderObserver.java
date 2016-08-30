@@ -15,9 +15,9 @@ import javax.telephony.events.ProvEv;
 import javax.telephony.events.ProvInServiceEv;
 import javax.telephony.events.ProvOutOfServiceEv;
 
-import org.cisco.cti.util.Condition;
-import org.cisco.jtapi.extensions.CiscoJtapiPeer;
-import org.cisco.jtapi.extensions.CiscoJtapiProperties;
+import com.cisco.cti.util.Condition;
+import com.cisco.jtapi.extensions.CiscoJtapiPeer;
+import com.cisco.jtapi.extensions.CiscoJtapiProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;

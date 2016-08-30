@@ -11,11 +11,11 @@ import javax.telephony.events.CallEv;
 import javax.telephony.events.ConnAlertingEv;
 import javax.telephony.events.Ev;
 
-import org.cisco.jtapi.ConnAlertingEvImpl;
-import org.cisco.jtapi.extensions.CiscoAddress;
-import org.cisco.jtapi.extensions.CiscoCall;
-import org.cisco.jtapi.extensions.CiscoConnection;
-import org.cisco.jtapi.extensions.CiscoTerminal;
+import com.cisco.jtapi.ConnAlertingEvImpl;
+import com.cisco.jtapi.extensions.CiscoAddress;
+import com.cisco.jtapi.extensions.CiscoCall;
+import com.cisco.jtapi.extensions.CiscoConnection;
+import com.cisco.jtapi.extensions.CiscoTerminal;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 

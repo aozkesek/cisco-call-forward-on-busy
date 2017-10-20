@@ -1,19 +1,18 @@
-package com.netas.jtapi;
+package org.mao.jtapi;
 
 import javax.telephony.Address;
 import javax.telephony.Terminal;
 
+import org.mao.jtapi.impl.DefaultAddressObserver;
+import org.mao.jtapi.impl.DefaultProviderObserver;
+import org.mao.jtapi.impl.DefaultTerminalObserver;
+import org.mao.jtapi.impl.ForwardOnBusyOtherAddressCommand;
+import org.mao.jtapi.impl.ObserverContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-
-import com.netas.jtapi.impl.DefaultAddressObserver;
-import com.netas.jtapi.impl.DefaultProviderObserver;
-import com.netas.jtapi.impl.DefaultTerminalObserver;
-import com.netas.jtapi.impl.ForwardOnBusyOtherAddressCommand;
-import com.netas.jtapi.impl.ObserverContainer;
 
 @SpringBootApplication
 public class ForwardOnBusyApp {

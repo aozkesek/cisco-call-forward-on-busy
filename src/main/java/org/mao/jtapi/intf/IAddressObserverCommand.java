@@ -1,10 +1,9 @@
-package com.netas.jtapi.intf;
+package org.mao.jtapi.intf;
 
 import javax.telephony.events.Ev;
 
+import org.mao.jtapi.impl.DefaultAddressObserver;
 import org.springframework.stereotype.Component;
-
-import com.netas.jtapi.impl.DefaultAddressObserver;
 
 @Component
 public interface IAddressObserverCommand extends IObserverCommand<DefaultAddressObserver, Ev> {

@@ -1,4 +1,4 @@
-package com.netas.jtapi.intf;
+package org.mao.jtapi.intf;
 
 public interface IObserverCommand<O, E> {
 	
